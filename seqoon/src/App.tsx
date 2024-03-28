@@ -1,110 +1,96 @@
-import { SVGProps } from 'react'
+import { SVGProps , useState } from 'react'
 
 import './App.css'
 import { JSX } from 'react/jsx-runtime'
-import { Input } from './components/ui/input'
 import PropertyCard from './components/custom/PropertyListing'
+import NavBar from './components/custom/NavBar'
 
 
 function App() {
   const properties = [
     {
       address: '1234 Elm St, Anytown, USA',
-      images: ['/placeholder1.svg', '/placeholder2.svg', '/placeholder3.svg'],
+      images: ['https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs7XeGPXAqvFk5WfZ3SF8RI18gT47-ztnk81wJhY-AAiV6LEcgAExMQ6--tJfIFUA3BgM&usqp=CAU', 'https://assets-global.website-files.com/63d38aee50ce5db25c12ba73/64109834877e86112c0deab0_pexels-binyamin-mellish-1396122.jpg'],
       price: 250000,
       baths: 2,
       beds: 3,
       featured: true,
-      description : "This is a beautiful home in a great neighborhood.",
+      description: "This is a beautiful home in a great neighborhood.",
     },
     {
-      address: '5678 Oak St, Sometown, USA',
-      images: ['/placeholder4.svg', '/placeholder5.svg', '/placeholder6.svg'],
+      address: '5678 Oak St, Anytown, USA',
+      images: ['https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs7XeGPXAqvFk5WfZ3SF8RI18gT47-ztnk81wJhY-AAiV6LEcgAExMQ6--tJfIFUA3BgM&usqp=CAU', 'https://assets-global.website-files.com/63d38aee50ce5db25c12ba73/64109834877e86112c0deab0_pexels-binyamin-mellish-1396122.jpg'],
       price: 350000,
       baths: 3,
       beds: 4,
       featured: false,
-      description : "This is a beautiful home in a great neighborhood.",
-
+      description: "This is a beautiful home in a great neighborhood.",
     },
     {
-      address: '91011 Pine St, Othertown, USA',
-      images: ['/placeholder7.svg', '/placeholder8.svg', '/placeholder9.svg'],
+      address: '91011 Pine St, Anytown, USA',
+      images: ['https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs7XeGPXAqvFk5WfZ3SF8RI18gT47-ztnk81wJhY-AAiV6LEcgAExMQ6--tJfIFUA3BgM&usqp=CAU', 'https://assets-global.website-files.com/63d38aee50ce5db25c12ba73/64109834877e86112c0deab0_pexels-binyamin-mellish-1396122.jpg'],
       price: 450000,
       baths: 4,
       beds: 5,
       featured: true,
-      description : "This is a beautiful home in a great neighborhood.",
+      description: "This is a beautiful home in a great neighborhood.",
     },
     {
-      address: '121314 Maple St, Anothertown, USA',
-      images: ['/placeholder10.svg', '/placeholder11.svg', '/placeholder12.svg'],
+      address: '1213 Maple St, Anytown, USA',
+      images: ['https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs7XeGPXAqvFk5WfZ3SF8RI18gT47-ztnk81wJhY-AAiV6LEcgAExMQ6--tJfIFUA3BgM&usqp=CAU', 'https://assets-global.website-files.com/63d38aee50ce5db25c12ba73/64109834877e86112c0deab0_pexels-binyamin-mellish-1396122.jpg'],
       price: 550000,
       baths: 5,
       beds: 6,
       featured: false,
-      description : "This is a beautiful home in a great neighborhood.",
+      description: "This is a beautiful home in a great neighborhood.",
     },
     {
-      address: '151617 Cedar St, Yetanothertown, USA',
-      images: ['/placeholder13.svg', '/placeholder14.svg', '/placeholder15.svg'],
+      address: '1415 Elm St, Anytown, USA',
+      images: ['https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs7XeGPXAqvFk5WfZ3SF8RI18gT47-ztnk81wJhY-AAiV6LEcgAExMQ6--tJfIFUA3BgM&usqp=CAU', 'https://assets-global.website-files.com/63d38aee50ce5db25c12ba73/64109834877e86112c0deab0_pexels-binyamin-mellish-1396122.jpg'],
       price: 650000,
       baths: 6,
       beds: 7,
       featured: true,
-      description : "This is a beautiful home in a great neighborhood.",
+      description: "This is a beautiful home in a great neighborhood.",
+
     }
   ];
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProperties, setFilteredProperties] = useState(properties);
+
+  const handleSearchChange = (e: { target: { value: any } }) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    filterProperties(query);
+  };
+
+  const filterProperties = (query: string) => {
+    const filtered = properties.filter(property =>
+      property.address.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProperties(filtered);
+  };
+
+ 
 
   return (
     <div>
-    <nav className="grid gap-2 border-t border-gray-200/50 backdrop-blur-sm dark:border-gray-800/50">
-      <div className="flex h-14 items-center px-4 md:px-6">
-        <a className="flex items-center font-semibold" href="#">
-          Acme Inc
-        </a>
-        <div className="mx-auto flex-1 w-full grid md:gap-2 md:px-4 lg:gap-4 lg:px-6">
-          <form className="w-full flex items-center space-x-2">
-            <SearchIcon className="h-4 w-4 opacity-50" />
-            <Input
-              className="font-normal peer h-8 w-full max-w-[200px] text-base border border-gray-300 rounded-md shadow-none appearance-none resize-none peer-[* placeholder:*]&:focus:outline-none peer-[* placeholder:*]&:focus:ring-0"
-              placeholder="Search"
-              type="search"
-            />
-          </form>
-        </div>
-        <nav className="hidden space-x-4 md:flex">
-          <a className="font-medium" href="#">
-            Home
-          </a>
-          <a className="font-medium" href="#">
-            Apartments
-          </a>
-          <a className="font-medium" href="#">
-            About Us
-          </a>
-          <a className="font-medium" href="#">
-            Contact
-          </a>
-        </nav>
+      <NavBar searchQuery={searchQuery} handleSearchChange={handleSearchChange} />
+      <div className="mb-6 text-center font-semibold text-lg">Explore Properties</div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 lg:px-8 py-6">
+        {filteredProperties.map((property, index) => (
+          <PropertyCard 
+            key={index} 
+            {...property} 
+            icons={property.featured ? [<BedIcon key="bed" />, <BathIcon key="bath" />] : []} 
+          />
+        ))}
       </div>
-    </nav>
-    <div className="mb-6 text-center font-semibold text-lg">Explore Properties</div>
-
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 lg:px-8 py-6">
-      {properties.map((property, index) => (
-        <PropertyCard 
-          key={index} 
-          {...property} 
-          icons={property.featured ? [<BedIcon key="bed" />, <BathIcon key="bath" />] : []} 
-        />
-      ))}
+      <footer className="border-t border-gray-200/50 backdrop-blur-sm dark:border-gray-800/50">
+        {/* Footer content */}
+      </footer>
     </div>
-    <footer className="text-center py-4 bg-gray-200">
-      &copy; 2024 Acme Inc. All rights reserved.
-    </footer>
-  </div>
-  )
+  );
 }
 
 
@@ -156,7 +142,7 @@ function BedIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 export default App
 
 
-function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+export function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -175,3 +161,14 @@ function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
